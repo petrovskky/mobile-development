@@ -1,59 +1,79 @@
-//
-//  SettingsView.swift
-//  Calculator
-//
-//  Created by Viktor on 12.03.25.
-//
-
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var isNotificationsEnabled = false
+    @EnvironmentObject var settings: SettingsViewModel
+    @State private var showNotificationAlert = false
+    @State private var alertMessage = ""
     
     var body: some View {
         Form {
+            Section(header: Text("Тема")) {
+                ColorPicker("Основной цвет", selection: Binding(
+                    get: { Color(hex: settings.theme.primaryColor) },
+                    set: { newColor in
+                        settings.theme.primaryColor = newColor.toHex()
+                        settings.saveTheme()
+                    }
+                ))
+                
+                HStack {
+                    Text("Размер шрифта: \(Int(settings.theme.fontSize))")
+                    Slider(value: Binding(
+                        get: { settings.theme.fontSize },
+                        set: { newValue in
+                            settings.theme.fontSize = newValue
+                            settings.saveTheme()
+                        }
+                    ), in: 10...30, step: 1)
+                }
+            }
+            
             Section(header: Text("Уведомления")) {
-                Toggle("Включить уведомления", isOn: $isNotificationsEnabled)
-                    .onChange(of: isNotificationsEnabled) { newValue in
-                        if newValue {
-                            requestNotificationPermission()
+                Toggle("Разрешить уведомления", isOn: Binding(
+                    get: { settings.notificationSettings.isEnabled },
+                    set: { newValue in
+                        settings.notificationSettings.isEnabled = newValue
+                        settings.saveNotificationSettings()
+                        Task {
+                            if newValue {
+                                await settings.requestNotificationPermission()
+                            } else {
+                                await settings.cancelNotification()
+                            }
                         }
                     }
+                ))
                 
-                Button("Запланировать тестовое уведомление") {
-                    scheduleNotification()
+                if settings.notificationSettings.isEnabled {
+                    TextField("Текст уведомления", text: Binding(
+                        get: { settings.notificationSettings.notificationText },
+                        set: { newValue in
+                            settings.notificationSettings.notificationText = newValue
+                            settings.saveNotificationSettings()
+                        }
+                    ))
+                    
+                    DatePicker("Время", selection: Binding(
+                        get: { settings.notificationSettings.notificationTime },
+                        set: { newValue in
+                            settings.notificationSettings.notificationTime = newValue
+                            settings.saveNotificationSettings()
+                            Task {
+                                settings.scheduleNotification()
+                            }
+                        }
+                    ), displayedComponents: .hourAndMinute)
                 }
-                .disabled(!isNotificationsEnabled)
             }
         }
         .navigationTitle("Настройки")
-    }
-    
-    func requestNotificationPermission() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if granted {
-                print("Разрешение на уведомления получено.")
-            } else if let error = error {
-                print("Ошибка: \(error.localizedDescription)")
-            }
+        .alert("Уведомления", isPresented: $showNotificationAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(alertMessage)
         }
-    }
-    
-    func scheduleNotification() {
-        let content = UNMutableNotificationContent()
-        content.title = "Тестовое уведомление"
-        content.body = "Это тестовое уведомление из калькулятора!"
-        content.sound = .default
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Ошибка при планировании уведомления: \(error.localizedDescription)")
-            } else {
-                print("Уведомление запланировано!")
-            }
+        .task {
+            await settings.loadTheme()
         }
     }
 }

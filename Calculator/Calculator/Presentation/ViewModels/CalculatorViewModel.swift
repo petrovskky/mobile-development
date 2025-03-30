@@ -7,6 +7,8 @@ class CalculatorViewModel: ObservableObject {
     @Published var calculation: Calculation
     private let calculateExpression: CalculateExpression
     @Published var isListening = false
+    private let firebaseRepository = FirebaseRepository()
+    @Published var calculations: [Calculation]
     
     private var speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ru-RU"))!
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
@@ -15,6 +17,7 @@ class CalculatorViewModel: ObservableObject {
     
     init() {
         self.calculation = Calculation(expression: "0")
+        self.calculations = []
         let dataSource = CalculatorDataSourceImpl()
         let repository = CalculatorRepositoryImpl(dataSource: dataSource)
         self.calculateExpression = CalculateExpression(repository: repository)
@@ -64,10 +67,21 @@ class CalculatorViewModel: ObservableObject {
             do {
                 let result = try await calculateExpression.execute(expression: calculation.expression)
                 calculation = result
+                await saveCalculation(calculation)
             } catch {
                 calculation = Calculation(expression: calculation.expression, is_error: true)
             }
         }
+    }
+    
+    private func saveCalculation(_ calc: Calculation) async {
+        do {
+            firebaseRepository.saveCalculation(calc)
+            calculations = try await firebaseRepository.getCalculationHistory();
+        } catch {
+            print("Ошибка при загрузке истории")
+        }
+        
     }
     
     func toggleSpeechRecognition() {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		24256E5A2D93F122008C83D4 /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24256E592D93F122008C83D4 /* NotificationSettings.swift */; };
 		2461D8812D6F0D370039E72E /* CalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2461D8682D6F0D370039E72E /* CalculatorApp.swift */; };
 		2461D8822D6F0D370039E72E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2461D8692D6F0D370039E72E /* Assets.xcassets */; };
 		2461D8832D6F0D370039E72E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2461D86B2D6F0D370039E72E /* Preview Assets.xcassets */; };
@@ -31,12 +32,15 @@
 		24BC8A5C2D881E2C00642162 /* DataBaseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24BC8A5B2D881E2C00642162 /* DataBaseRepository.swift */; };
 		24BC8A5E2D88253800642162 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24BC8A5D2D88253800642162 /* Theme.swift */; };
 		24BC8A612D90547600642162 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 24BC8A602D90547600642162 /* FirebaseFirestore */; };
+		24BC8A632D906A7F00642162 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24BC8A622D906A7F00642162 /* SettingsViewModel.swift */; };
+		24BC8A662D90746E00642162 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24BC8A652D90746E00642162 /* ColorExtension.swift */; };
 		24E056D92D5BC23400700DCE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24E056D82D5BC23400700DCE /* Assets.xcassets */; };
 		24E056DC2D5BC23400700DCE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24E056DB2D5BC23400700DCE /* Preview Assets.xcassets */; };
 		24FAABCC2D75D2F400B7C63F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24FAABCB2D75D2F400B7C63F /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		24256E592D93F122008C83D4 /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		2461D8682D6F0D370039E72E /* CalculatorApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorApp.swift; sourceTree = "<group>"; };
 		2461D8692D6F0D370039E72E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2461D86B2D6F0D370039E72E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -56,6 +60,8 @@
 		24BC8A592D881DF100642162 /* FirebaseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRepository.swift; sourceTree = "<group>"; };
 		24BC8A5B2D881E2C00642162 /* DataBaseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseRepository.swift; sourceTree = "<group>"; };
 		24BC8A5D2D88253800642162 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		24BC8A622D906A7F00642162 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		24BC8A652D90746E00642162 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		24E056CF2D5BC23100700DCE /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24E056D82D5BC23400700DCE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		24E056DB2D5BC23400700DCE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -82,6 +88,7 @@
 		2461D8672D6F0D370039E72E /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				24BC8A642D90744D00642162 /* Utils */,
 				2461D8682D6F0D370039E72E /* CalculatorApp.swift */,
 				2461D8692D6F0D370039E72E /* Assets.xcassets */,
 				2461D86A2D6F0D370039E72E /* Preview Content */,
@@ -159,6 +166,7 @@
 			children = (
 				2461D8772D6F0D370039E72E /* Calculation.swift */,
 				24BC8A5D2D88253800642162 /* Theme.swift */,
+				24256E592D93F122008C83D4 /* NotificationSettings.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -176,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				2461D87B2D6F0D370039E72E /* CalculatorViewModel.swift */,
+				24BC8A622D906A7F00642162 /* SettingsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -197,6 +206,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		24BC8A642D90744D00642162 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				24BC8A652D90746E00642162 /* ColorExtension.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		24E056C62D5BC23000700DCE = {
@@ -327,15 +344,18 @@
 				2461D88A2D6F0D370039E72E /* CalculatorViewModel.swift in Sources */,
 				2461D88E2D6F0D370039E72E /* CalculatorView.swift in Sources */,
 				2461D88C2D6F0D370039E72E /* CalculatorKeypad.swift in Sources */,
+				24BC8A662D90746E00642162 /* ColorExtension.swift in Sources */,
 				24BC8A5C2D881E2C00642162 /* DataBaseRepository.swift in Sources */,
 				24BC8A5A2D881DF200642162 /* FirebaseRepository.swift in Sources */,
 				2461D88D2D6F0D370039E72E /* CalculatorDisplay.swift in Sources */,
 				2461D8852D6F0D370039E72E /* CalculatorRepositoryImpl.swift in Sources */,
+				24256E5A2D93F122008C83D4 /* NotificationSettings.swift in Sources */,
 				2461D8812D6F0D370039E72E /* CalculatorApp.swift in Sources */,
 				24BC8A582D817E7B00642162 /* SettingsView.swift in Sources */,
 				24BC8A5E2D88253800642162 /* Theme.swift in Sources */,
 				2461D8872D6F0D370039E72E /* CalculateExpression.swift in Sources */,
 				2461D8862D6F0D370039E72E /* CalculatorRepository.swift in Sources */,
+				24BC8A632D906A7F00642162 /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

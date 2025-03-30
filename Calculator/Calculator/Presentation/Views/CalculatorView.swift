@@ -2,50 +2,106 @@ import SwiftUI
 
 struct CalculatorView: View {
     @StateObject private var viewModel = CalculatorViewModel()
+    @EnvironmentObject var settings: SettingsViewModel
+    @State private var showingHistory = false
     
     var body: some View {
-        NavigationView {
-            GeometryReader { geometry in
-                let displayHeight = geometry.size.height * 0.3
-                let keypadHeight = geometry.size.height * 0.7
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                CalculatorDisplay(calculation: viewModel.calculation)
+                    .frame(height: geometry.size.height * 0.3)
                 
-                VStack(spacing: 0) {
-                    CalculatorDisplay(calculation: viewModel.calculation)
-                        .frame(height: displayHeight)
-                    
-                    CalculatorKeypad(onKeyPressed: { key in
-                        viewModel.processKey(key)
-                    })
-                    .frame(height: keypadHeight)
-                }
+                CalculatorKeypad(onKeyPressed: { key in
+                    viewModel.processKey(key)
+                })
+                .frame(height: geometry.size.height * 0.7)
             }
-            .navigationTitle("Calculator")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                                    NavigationLink(destination: SettingsView()) {
-                                        Image(systemName: "gear")
-                                            .font(.title3)
-                                            .foregroundColor(.blue)
-                                    }
-                                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
+        }
+        .navigationTitle("Calculator")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                HStack(spacing: 16) {
+                    NavigationLink(destination: SettingsView()) {
+                        Image(systemName: "gear")
+                            .font(.system(size: CGFloat(settings.theme.fontSize)))
+                            .foregroundColor(Color(hex: settings.theme.primaryColor))
+                    }
+                    
                     Button(action: {
-                        viewModel.toggleSpeechRecognition()
+                        showingHistory = true
                     }) {
-                        Image(systemName: viewModel.isListening ? "mic.fill" : "mic")
-                            .font(.title3)
-                            .foregroundColor(viewModel.isListening ? .red : .blue)
+                        Image(systemName: "clock.arrow.circlepath")
+                            .font(.system(size: CGFloat(settings.theme.fontSize)))
+                            .foregroundColor(Color(hex: settings.theme.primaryColor))
+                    }
+                    .sheet(isPresented: $showingHistory) {
+                        CalculationHistoryView().environmentObject(settings)
                     }
                 }
+            }
+            
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    viewModel.toggleSpeechRecognition()
+                }) {
+                    Image(systemName: viewModel.isListening ? "mic.fill" : "mic")
+                        .font(.system(size: CGFloat(settings.theme.fontSize)))
+                        .foregroundColor(viewModel.isListening ? .red : Color(hex: settings.theme.primaryColor))
+                }
+            }
+        }
+        .onAppear {
+            Task {
+                await settings.loadTheme()
             }
         }
     }
 }
 
-struct CalculatorView_Previews: PreviewProvider {
-    static var previews: some View {
-        CalculatorView()
+struct CalculationHistoryView: View {
+    @EnvironmentObject var settings: SettingsViewModel
+    @State private var history: [Calculation] = []
+    private let repository = FirebaseRepository()
+    
+    var body: some View {
+        NavigationView {
+            Group {
+                if history.isEmpty {
+                    Text("История пуста")
+                        .foregroundColor(.gray)
+                } else {
+                    List(history, id: \.id) { calculation in
+                        VStack(alignment: .leading) {
+                            Text(calculation.expression)
+                                .font(.system(size: CGFloat(settings.theme.fontSize)))
+                            if let result = calculation.result {
+                                Text("= \(result)")
+                                    .font(.system(size: CGFloat(settings.theme.fontSize) * 0.9))
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                        .padding(.vertical, 4)
+                    }
+                }
+            }
+            .navigationTitle("История")
+            .onAppear {
+                loadHistory()
+            }
+        }
+    }
+    
+    private func loadHistory() {
+        Task {
+            do {
+                let fetchedHistory = try await repository.getCalculationHistory()
+                await MainActor.run {
+                    history = fetchedHistory
+                }
+            } catch {
+                print("Error loading history: \(error)")
+            }
+        }
     }
 }
