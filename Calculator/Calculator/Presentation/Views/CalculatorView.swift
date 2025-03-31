@@ -3,7 +3,10 @@ import SwiftUI
 struct CalculatorView: View {
     @StateObject private var viewModel = CalculatorViewModel()
     @EnvironmentObject var settings: SettingsViewModel
+    @EnvironmentObject var passKeyManager: PassKeyManager
     @State private var showingHistory = false
+    @State private var showPassKeyPrompt = false
+    @State private var isSettingsActive = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -22,7 +25,13 @@ struct CalculatorView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 HStack(spacing: 16) {
-                    NavigationLink(destination: SettingsView()) {
+                    Button(action: {
+                        if passKeyManager.isPassKeySet {
+                            showPassKeyPrompt = true
+                        } else {
+                            isSettingsActive = true
+                        }
+                    }) {
                         Image(systemName: "gear")
                             .font(.system(size: CGFloat(settings.theme.fontSize)))
                             .foregroundColor(Color(hex: settings.theme.primaryColor))
@@ -51,6 +60,19 @@ struct CalculatorView: View {
                 }
             }
         }
+        .sheet(isPresented: $showPassKeyPrompt) {
+            PassKeyView(isPresented: $showPassKeyPrompt) {
+                isSettingsActive = true
+            }
+        }
+        .background(
+            NavigationLink(
+                destination: SettingsView()
+                    .environmentObject(settings)
+                    .environmentObject(passKeyManager),
+                isActive: $isSettingsActive
+            ) { EmptyView() }
+        )
         .onAppear {
             Task {
                 await settings.loadTheme()

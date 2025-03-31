@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		24256E5A2D93F122008C83D4 /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24256E592D93F122008C83D4 /* NotificationSettings.swift */; };
+		24256E5C2D99D224008C83D4 /* PassKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24256E5B2D99D224008C83D4 /* PassKeyManager.swift */; };
+		24256E5E2D99D7FA008C83D4 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24256E5D2D99D7FA008C83D4 /* Enums.swift */; };
+		24256E602D99D87B008C83D4 /* PassKeySetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24256E5F2D99D87B008C83D4 /* PassKeySetupView.swift */; };
+		24256E622D99D8D0008C83D4 /* PassKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24256E612D99D8D0008C83D4 /* PassKeyView.swift */; };
 		2461D8812D6F0D370039E72E /* CalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2461D8682D6F0D370039E72E /* CalculatorApp.swift */; };
 		2461D8822D6F0D370039E72E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2461D8692D6F0D370039E72E /* Assets.xcassets */; };
 		2461D8832D6F0D370039E72E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2461D86B2D6F0D370039E72E /* Preview Assets.xcassets */; };
@@ -41,6 +45,10 @@
 
 /* Begin PBXFileReference section */
 		24256E592D93F122008C83D4 /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
+		24256E5B2D99D224008C83D4 /* PassKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKeyManager.swift; sourceTree = "<group>"; };
+		24256E5D2D99D7FA008C83D4 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		24256E5F2D99D87B008C83D4 /* PassKeySetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKeySetupView.swift; sourceTree = "<group>"; };
+		24256E612D99D8D0008C83D4 /* PassKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKeyView.swift; sourceTree = "<group>"; };
 		2461D8682D6F0D370039E72E /* CalculatorApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorApp.swift; sourceTree = "<group>"; };
 		2461D8692D6F0D370039E72E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2461D86B2D6F0D370039E72E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -149,6 +157,7 @@
 			children = (
 				2461D8732D6F0D370039E72E /* CalculatorRepository.swift */,
 				24BC8A5B2D881E2C00642162 /* DataBaseRepository.swift */,
+				24256E5B2D99D224008C83D4 /* PassKeyManager.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -197,6 +206,8 @@
 				2461D87F2D6F0D370039E72E /* CalculatorDisplay.swift */,
 				2461D8802D6F0D370039E72E /* CalculatorView.swift */,
 				24BC8A572D817E7B00642162 /* SettingsView.swift */,
+				24256E5F2D99D87B008C83D4 /* PassKeySetupView.swift */,
+				24256E612D99D8D0008C83D4 /* PassKeyView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -212,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				24BC8A652D90746E00642162 /* ColorExtension.swift */,
+				24256E5D2D99D7FA008C83D4 /* Enums.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -340,10 +352,12 @@
 			files = (
 				2461D8842D6F0D370039E72E /* CalculatorDataSource.swift in Sources */,
 				2461D88B2D6F0D370039E72E /* CalculatorButton.swift in Sources */,
+				24256E5E2D99D7FA008C83D4 /* Enums.swift in Sources */,
 				2461D8882D6F0D370039E72E /* Calculation.swift in Sources */,
 				2461D88A2D6F0D370039E72E /* CalculatorViewModel.swift in Sources */,
 				2461D88E2D6F0D370039E72E /* CalculatorView.swift in Sources */,
 				2461D88C2D6F0D370039E72E /* CalculatorKeypad.swift in Sources */,
+				24256E622D99D8D0008C83D4 /* PassKeyView.swift in Sources */,
 				24BC8A662D90746E00642162 /* ColorExtension.swift in Sources */,
 				24BC8A5C2D881E2C00642162 /* DataBaseRepository.swift in Sources */,
 				24BC8A5A2D881DF200642162 /* FirebaseRepository.swift in Sources */,
@@ -354,7 +368,9 @@
 				24BC8A582D817E7B00642162 /* SettingsView.swift in Sources */,
 				24BC8A5E2D88253800642162 /* Theme.swift in Sources */,
 				2461D8872D6F0D370039E72E /* CalculateExpression.swift in Sources */,
+				24256E5C2D99D224008C83D4 /* PassKeyManager.swift in Sources */,
 				2461D8862D6F0D370039E72E /* CalculatorRepository.swift in Sources */,
+				24256E602D99D87B008C83D4 /* PassKeySetupView.swift in Sources */,
 				24BC8A632D906A7F00642162 /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

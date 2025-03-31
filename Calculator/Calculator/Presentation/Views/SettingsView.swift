@@ -2,8 +2,13 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var settings: SettingsViewModel
+    @EnvironmentObject var passKeyManager: PassKeyManager
     @State private var showNotificationAlert = false
     @State private var alertMessage = ""
+    @State private var showPassKeySetup = false
+    @State private var newPassKey = ""
+    @State private var confirmPassKey = ""
+    @State private var errorMessage = ""
     
     var body: some View {
         Form {
@@ -65,12 +70,71 @@ struct SettingsView: View {
                     ), displayedComponents: .hourAndMinute)
                 }
             }
+            
+            Section(header: Text("Pass Key")) {
+                if passKeyManager.isPassKeySet {
+                    Button("Изменить Pass Key") {
+                        showPassKeySetup = true
+                    }
+                    Button("Удалить Pass Key") {
+                        passKeyManager.removePassKey()
+                    }
+                    .foregroundColor(.red)
+                } else {
+                    Button("Установить Pass Key") {
+                        showPassKeySetup = true
+                    }
+                }
+            }
         }
         .navigationTitle("Настройки")
         .alert("Уведомления", isPresented: $showNotificationAlert) {
             Button("OK", role: .cancel) { }
         } message: {
             Text(alertMessage)
+        }
+        .sheet(isPresented: $showPassKeySetup) {
+            VStack(spacing: 20) {
+                Text(passKeyManager.isPassKeySet ? "Изменить Pass Key" : "Установить Pass Key")
+                    .font(.title2)
+                
+                SecureField("Новый Pass Key", text: $newPassKey)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                SecureField("Подтвердите Pass Key", text: $confirmPassKey)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                if !errorMessage.isEmpty {
+                    Text(errorMessage)
+                    .foregroundColor(.red)
+                }
+                
+                Button("Сохранить") {
+                    if newPassKey != confirmPassKey {
+                        errorMessage = "Pass Key не совпадают"
+                    } else {
+                        switch passKeyManager.setPassKey(newPassKey) {
+                        case .success:
+                            showPassKeySetup = false
+                            newPassKey = ""
+                            confirmPassKey = ""
+                            errorMessage = ""
+                        case .failure(.tooShort):
+                            errorMessage = "Минимум 4 символа"
+                        case .failure(.saveError):
+                            errorMessage = "Ошибка сохранения"
+                        }
+                    }
+                }
+                
+                Button("Отмена") {
+                    showPassKeySetup = false
+                    newPassKey = ""
+                    confirmPassKey = ""
+                    errorMessage = ""
+                }
+            }
+            .padding()
         }
         .task {
             await settings.loadTheme()

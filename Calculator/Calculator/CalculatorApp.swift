@@ -12,6 +12,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct CalculatorApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject private var settings = SettingsViewModel()
+    @StateObject private var passKeyManager = PassKeyManager()
     
     var body: some Scene {
         WindowGroup {
@@ -19,6 +20,7 @@ struct CalculatorApp: App {
                 CalculatorView()
             }
             .environmentObject(settings)
+            .environmentObject(passKeyManager)
             .task {
                 await settings.loadTheme()
             }
